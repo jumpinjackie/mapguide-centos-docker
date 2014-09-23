@@ -1,7 +1,6 @@
 # DOCKER-VERSION 1.0.0
 FROM centos:centos6
 ADD supervisord.conf /etc/supervisord.conf
-RUN yum -y update
 RUN yum -y install unzip python-setuptools wget tar glibc.i686 libstdc++.i686 expat.i686 libcurl.i686 pcre.i686 libxslt.i686 libpng.i686
 RUN easy_install supervisor
 RUN yum clean all
