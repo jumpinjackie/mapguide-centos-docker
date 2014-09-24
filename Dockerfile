@@ -20,9 +20,11 @@ RUN echo -e "\n[program:apache2]" >> /etc/supervisord.conf
 RUN echo -e "\ncommand=/usr/local/mapguideopensource-2.6.0/webserverextensions/apache2/bin/apachectl start" >> /etc/supervisord.conf
 
 # Fetch the required dependencies for MapGuide/Apache/PHP to work. Clean afterwards to reduce size footprint on the final image
-RUN yum -y install unzip python-setuptools wget tar glibc.i686 libstdc++.i686 expat.i686 libcurl.i686 pcre.i686 libxslt.i686 libpng.i686 && \
+RUN yum -y install unzip python-setuptools wget tar curl xorg-x11-font-utils fontconfig glibc.i686 libstdc++.i686 expat.i686 libcurl.i686 pcre.i686 libxslt.i686 libpng.i686 && \
   yum clean all && \
-  easy_install supervisor
+  easy_install supervisor && \
+  rpm -i http://pkgs.repoforge.org/cabextract/cabextract-1.4-1.el6.rf.i686.rpm && \
+  rpm -i https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm
 
 # Download the required tarballs, install them and wipe the tarballs afterwards. Do this in a single chained
 # command to reduce size footprint on the final image
@@ -32,7 +34,8 @@ RUN wget http://download.osgeo.org/mapguide/releases/2.6.0/Release/fdosdk-centos
   tar -zxf fdosdk-centos6-i386-3.9.0_7090.tar.gz -C /usr/local/fdo-3.9.0 && \
   tar -zxf mapguideopensource-2.6.0.8335.i386.tar.gz -C / && \
   rm fdosdk-centos6-i386-3.9.0_7090.tar.gz && \
-  rm mapguideopensource-2.6.0.8335.i386.tar.gz
+  rm mapguideopensource-2.6.0.8335.i386.tar.gz && \
+  cp /usr/share/fonts/msttcore/*.ttf /usr/local/mapguideopensource-2.6.0/server/bin
 
 # Expose the web server port
 EXPOSE 8008
