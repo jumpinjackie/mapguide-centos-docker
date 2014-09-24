@@ -1,6 +1,8 @@
 # DOCKER-VERSION 1.0.0
 #
-# Dockerfile for MapGuide / CentOS 6 / Apache httpd / PHP
+# Dockerfile for building a base CentOS 6 image with MapGuide / Apache httpd / PHP included
+#
+# msttcorefonts also included to reduce occurrences of hieroglyphic labels being rendered due to missing fonts
 #
 #  - MapGuide Open Source 2.6.0
 #  - FDO 3.9.0
@@ -11,7 +13,8 @@ FROM centos:centos6
 MAINTAINER Jackie Ng "jumpinjackie@gmail.com"
 
 # Write the /etc/supervisord.conf file inline
-# This will start the MapGuide Server and httpd web server
+# This will start the MapGuide Server and httpd web server when a derived dockerfile
+# invokes /usr/bin/supervisord
 RUN echo "[supervisord]" > /etc/supervisord.conf
 RUN echo -e "\nnodaemon=true" >> /etc/supervisord.conf
 RUN echo -e "\n[program:mgserver]" >> /etc/supervisord.conf
@@ -36,7 +39,3 @@ RUN wget http://download.osgeo.org/mapguide/releases/2.6.0/Release/fdosdk-centos
   rm fdosdk-centos6-i386-3.9.0_7090.tar.gz && \
   rm mapguideopensource-2.6.0.8335.i386.tar.gz && \
   cp /usr/share/fonts/msttcore/*.ttf /usr/local/mapguideopensource-2.6.0/server/bin
-
-# Expose the web server port
-EXPOSE 8008
-CMD ["/usr/bin/supervisord"]
