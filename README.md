@@ -1,5 +1,11 @@
+THIS DOCKER IMAGE IS NO LONGER MAINTAINED
+=========================================
+
+Consider using: https://hub.docker.com/r/brucepc/mapguide/
+
 mapguide-base
 =============
+
 
 Docker base image that bundles the latest stable release of [MapGuide Open Source](http://mapguide.osgeo.org)
 
